@@ -25,7 +25,8 @@ jobs:
           python-version: '3.x'
 
       - name: Install test dependencies
-        run: pip install yamllint ansible-lint[core]
+        run: pip install molecule[lint]
+        #yamllint ansible-lint[core]
 
       - name: Lint code
         run: |
@@ -67,7 +68,8 @@ jobs:
           python-version: '3.x'
 
       - name: Install test dependencies
-        run: pip install 'ansible${{ matrix.ansible-version }}' molecule[docker] docker yamllint ansible-lint[core]
+        run: pip install 'ansible${{ matrix.ansible-version }}' molecule[docker,lint]
+        # docker yamllint ansible-lint[core]
 
       - name: Run Molecule [copy]
         run: |
