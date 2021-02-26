@@ -1,6 +1,5 @@
 ---
 name: Ansible Molecule
-# déclenchement sur push et pull_request
 on:
   pull_request:
     branches:
@@ -26,7 +25,6 @@ jobs:
 
       - name: Install test dependencies
         run: pip install molecule[lint]
-        #yamllint ansible-lint[core]
 
       - name: Lint code
         run: |
@@ -69,7 +67,6 @@ jobs:
 
       - name: Install test dependencies
         run: pip install 'ansible${{ matrix.ansible-version }}' molecule[docker,lint]
-        # docker yamllint ansible-lint[core]
 
       - name: Run Molecule [copy]
         run: |
