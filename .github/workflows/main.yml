@@ -1,0 +1,100 @@
+---
+name: Ansible Molecule
+# déclenchement sur push et pull_request
+on:
+  pull_request:
+    branches:
+      - master
+      - dev
+  push:
+    branches:
+      - master
+      - dev
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install test dependencies
+        run: pip install yamllint ansible-lint[core]
+
+      - name: Lint code
+        run: |
+          yamllint .
+          ansible-lint
+  molecule:
+    name: Molecule
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "${{ github.repository }}"
+    needs:
+      - lint
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: 'debian:buster-slim'
+            ansible-version: '>=2.8, <2.9'
+          - os: 'debian:buster-slim'
+            ansible-version: '>=2.9, <2.10'
+          - os: 'debian:buster-slim'
+            ansible-version: '>=2.10, <2.11'
+          - os: 'debian:stretch-slim'
+          - os: 'debian:buster-slim'
+          - os: 'ubuntu:xenial'
+          - os: 'ubuntu:bionic'
+          - os: 'ubuntu:focal'
+
+    steps:
+      - name: Check out the codebase
+        uses: actions/checkout@v2
+        with:
+          path: "${{ github.repository }}"
+
+      - name: Set up Python 3
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install test dependencies
+        run: pip install 'ansible${{ matrix.ansible-version }}' molecule[docker] docker yamllint ansible-lint[core]
+
+      - name: Run Molecule [copy]
+        run: |
+          molecule test -s default
+        env:
+          ANSIBLE_FORCE_COLOR: '1'
+          ANSIBLE_VERBOSITY: '2'
+          MOLECULE_DEBUG: '1'
+          MOLECULE_OS: ${{ matrix.os }}
+          PY_COLORS: '1'
+
+      - name: Run Molecule [append]
+        run: |
+          molecule test -s default_append
+        env:
+          ANSIBLE_FORCE_COLOR: '1'
+          ANSIBLE_VERBOSITY: '2'
+          MOLECULE_DEBUG: '1'
+          MOLECULE_OS: ${{ matrix.os }}
+          PY_COLORS: '1'
+
+      - name: Run Molecule [append_reverse]
+        run: |
+          molecule test -s default_append_reverse
+        env:
+          ANSIBLE_FORCE_COLOR: '1'
+          ANSIBLE_VERBOSITY: '2'
+          MOLECULE_DEBUG: '1'
+          MOLECULE_OS: ${{ matrix.os }}
+          PY_COLORS: '1'

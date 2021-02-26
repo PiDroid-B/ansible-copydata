@@ -1,0 +1,17 @@
+- name: "append_files : ensures target directory exists"
+  file:
+    path: "{{ copydata_dest }}"
+    owner: "{{ copydata_owner }}"
+    group: "{{ copydata_group }}"
+    mode: "{{ copydata_mode }}"
+    state: directory
+
+- name: "append_files : Append common and specifics files"
+  template:
+    src: "{{ copydata_template }}"
+    dest: "{{ copydata_dest }}/{{ item[0] }}"
+    owner: "{{ copydata_owner }}"
+    group: "{{ copydata_group }}"
+    mode: "{{ copydata_mode }}"
+  loop: "{{ _copydata_filelist_tmp['meta']['sources'] }}"
+  register: _copydata_result_copy

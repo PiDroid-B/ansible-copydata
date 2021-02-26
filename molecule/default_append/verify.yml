@@ -1,0 +1,159 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+  tasks:
+    - name: "Verify append 1 default"
+      include_tasks: ../_common/verify_item_exists.yml
+      vars:
+        step_id: 1
+        f:
+          - path: "all.dummy"
+            contains: |
+              [comme from all]
+          - path: "gp1.dummy"
+            contains: |
+              [comme from all]
+              [comme from gp1]
+          - path: "gp2.dummy"
+            contains: |
+              [comme from all]
+              [comme from gp1]
+              [comme from gp2]
+          - path: "host1.dummy"
+            contains: |
+              [comme from all]
+              [comme from gp1]
+              [comme from gp2]
+              [comme from host1]
+          - path: "onlyhost1.dummy"
+            contains: |
+              [comme from host1]
+      when: molecule_step|default('1') == '1'
+    # -----------------------------------------------------
+    - name: "Verify append 2 path exists"
+      include_tasks: ../_common/verify_item_exists.yml
+      vars:
+        step_id: 2
+        f:
+          - path: "other_file"
+            contains: |
+              [already exists before test]
+          - path: "all.dummy"
+            contains: |
+              [comme from all]
+          - path: "gp1.dummy"
+            contains: |
+              [comme from all]
+              [comme from gp1]
+          - path: "gp2.dummy"
+            contains: |
+              [comme from all]
+              [comme from gp1]
+              [comme from gp2]
+          - path: "host1.dummy"
+            contains: |
+              [comme from all]
+              [comme from gp1]
+              [comme from gp2]
+              [comme from host1]
+          - path: "onlyhost1.dummy"
+            contains: |
+              [comme from host1]
+      when: molecule_step|default('2') == '2'
+    # -----------------------------------------------------
+    - name: "Verify append 3 remove"
+      include_tasks: ../_common/verify_item_exists.yml
+      vars:
+        step_id: 3
+        f:
+          - path: "all.dummy"
+            contains: |
+              [comme from all]
+          - path: "gp1.dummy"
+            contains: |
+              [comme from all]
+              [comme from gp1]
+          - path: "gp2.dummy"
+            contains: |
+              [comme from all]
+              [comme from gp1]
+              [comme from gp2]
+          - path: "host1.dummy"
+            contains: |
+              [comme from all]
+              [comme from gp1]
+              [comme from gp2]
+              [comme from host1]
+          - path: "onlyhost1.dummy"
+            contains: |
+              [comme from host1]
+        when: molecule_step|default('3') == '3'
+
+    - include_tasks: ../_common/verify_item_absents.yml
+      vars:
+        step_id: 3
+        f:
+          - "other_file"
+          - "other_file.dummy"
+      when: molecule_step|default('3') == '3'
+    # -----------------------------------------------------
+    - name: "Verify append 4 pattern"
+      include_tasks: ../_common/verify_item_exists.yml
+      vars:
+        step_id: 4
+        f:
+          - path: "other_file.dummy"
+            contains: |
+              [already exists before test]
+          - path: "other_file"
+            contains: |
+              [already exists before test]
+          - path: "host1.dummy"
+            contains: |
+              [comme from all]
+              [comme from gp1]
+              [comme from gp2]
+              [comme from host1]
+          - path: "onlyhost1.dummy"
+            contains: |
+              [comme from host1]
+      when: molecule_step|default('4') == '4'
+
+    - include_tasks: ../_common/verify_item_absents.yml
+      vars:
+        step_id: 4
+        f:
+          - "gp2.dummy"
+          - "gp1.dummy"
+          - "all.dummy"
+      when: molecule_step|default('4') == '4'
+    # -----------------------------------------------------
+    - name: "Verify append 5 remove pattern"
+      include_tasks: ../_common/verify_item_exists.yml
+      vars:
+        step_id: 5
+        f:
+          - path: "other_file"
+            contains: |
+              [already exists before test]
+          - path: "host1.dummy"
+            contains: |
+              [comme from all]
+              [comme from gp1]
+              [comme from gp2]
+              [comme from host1]
+          - path: "onlyhost1.dummy"
+            contains: |
+              [comme from host1]
+      when: molecule_step|default('5') == '5'
+
+    - include_tasks: ../_common/verify_item_absents.yml
+      vars:
+        step_id: 5
+        f:
+          - "gp2.dummy"
+          - "gp1.dummy"
+          - "all.dummy"
+          - "other_file.dummy"
+      when: molecule_step|default('5') == '5'

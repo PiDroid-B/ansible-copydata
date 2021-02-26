@@ -1,0 +1,51 @@
+- name: "check_vars : owner / group / mode"
+  assert:
+    that:
+      - copydata_owner|default()
+      - copydata_group|default()
+      - copydata_mode|default()
+    msg: |
+      /!\ ERROR /!\ owner, group or permission is empty of not defined
+
+      copydata_owner = {{ copydata_owner|default('[Undefined]') }}
+      copydata_group = {{ copydata_group|default('[Undefined]') }}
+      copydata_mode = {{ copydata_mode|default('[Undefined]') }}
+
+- name: "check_vars : sources and destinaiton"
+  assert:
+    that:
+      - copydata_datadir|default()
+      - copydata_datadir[-1] == '/'
+      - copydata_src|default()
+      - copydata_src[-1] == '/'
+      - copydata_dest|default()
+      - copydata_dest[-1] == '/'
+    msg: |
+      /!\ ERROR /!\ source or destination is not defined or does not end with '/'
+
+      copydata_datadir is the parent data directory
+
+      copydata_src is the relative path for each group/host if exist (i.e. : a role name) :
+      - <copydata_datadir>/group/all/<copydata_src>/
+      - <copydata_datadir>/group/<group name>/<copydata_src>/
+      - <copydata_datadir>/host/<host name>/<copydata_src>/
+
+      copydata_dest is the full path target directory (i.e. : /tmp/copied/files/ )
+
+      copydata_datadir = {{ copydata_datadir|default('[Undefined]') }}
+      copydata_src = {{ copydata_src|default('[Undefined]') }}
+      copydata_dest = {{ copydata_dest|default('[Undefined]') }}
+
+- name: "check_vars : type of copy (copy vs append/append_reverse)"
+  assert:
+    that:
+      - copydata_copy_type|default()
+      - copydata_copy_type in ['copy','append','append_reverse']
+    msg: |
+      /!\ ERROR /!\ copydata_copy_type must be in ['copy','append','append_reverse']
+
+      when 'copy', through all directories' structure, only the most precise files will be kept
+      when 'append', all files with same name will be appended (from most global to most precise)
+      when 'append_reverse', all files with same name will be appended (from most precise to most global)
+
+      copydata_copy_type = {{ copydata_copy_type|default('[Undefined]') }}

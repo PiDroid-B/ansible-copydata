@@ -1,0 +1,55 @@
+---
+- name: Prepare
+  hosts: all
+  become: true
+  tasks:
+    # no prepare for step 1
+    # -----------------------------------------------------
+    # Prepare 2 path exists
+    - include_tasks: ../_common/prepare_item.yml
+      vars:
+        step_id: 2
+        f:
+          - path: "other_file"
+            contains: |
+              [already exists before test]
+      when: molecule_step|default('2') == '2'
+    # -----------------------------------------------------
+    # Prepare 3 remove
+    - include_tasks: ../_common/prepare_item.yml
+      vars:
+        step_id: 3
+        f:
+          - path: "other_file"
+            contains: |
+              [already exists before test]
+          - path: "other_file.dummy"
+            contains: |
+              [already exists before test]
+      when: molecule_step|default('3') == '3'
+    # -----------------------------------------------------
+    # Prepare 4 pattern
+    - include_tasks: ../_common/prepare_item.yml
+      vars:
+        step_id: 4
+        f:
+          - path: "other_file"
+            contains: |
+              [already exists before test]
+          - path: "other_file.dummy"
+            contains: |
+              [already exists before test]
+      when: molecule_step|default('4') == '4'
+    # -----------------------------------------------------
+    # Prepare 5 remove pattern
+    - include_tasks: ../_common/prepare_item.yml
+      vars:
+        step_id: 5
+        f:
+          - path: "other_file"
+            contains: |
+              [already exists before test]
+          - path: "other_file.dummy"
+            contains: |
+              [already exists before test]
+      when: molecule_step|default('5') == '5'

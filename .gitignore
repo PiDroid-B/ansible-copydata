@@ -1,0 +1,10 @@
+*.retry
+.idea
+.ideal/*
+out/
+.travis.yml
+*.molecule
+*.log
+*.swp
+.tox
+tests/

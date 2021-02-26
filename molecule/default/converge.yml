@@ -1,0 +1,69 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Converge copy 1 default"
+      include_role:
+        name: "ansible-copydata"
+      vars:
+        copydata_datadir: "{{ data_dir }}"
+        copydata_src: 'default/'
+        copydata_dest: "/tmp/step1/"
+        copydata_owner: 'root'
+        copydata_group: 'root'
+        copydata_mode: '770'
+      when: molecule_step|default('1') == '1'
+    # -----------------------------------------------------
+    - name: "Converge copy 2 path exists"
+      include_role:
+        name: "ansible-copydata"
+      vars:
+        copydata_datadir: "{{ data_dir }}"
+        copydata_src: 'default/'
+        copydata_dest: "/tmp/step2/"
+        copydata_owner: 'root'
+        copydata_group: 'root'
+        copydata_mode: '770'
+      when: molecule_step|default('2') == '2'
+    # -----------------------------------------------------
+    - name: "Converge copy 3 remove"
+      include_role:
+        name: "ansible-copydata"
+      vars:
+        copydata_datadir: "{{ data_dir }}"
+        copydata_src: 'default/'
+        copydata_dest: "/tmp/step3/"
+        copydata_owner: 'root'
+        copydata_group: 'root'
+        copydata_mode: '770'
+        copydata_remove_other_files: True
+      when: molecule_step|default('3') == '3'
+    # -----------------------------------------------------
+    - name: "Converge copy 4 pattern"
+      include_role:
+        name: "ansible-copydata"
+      vars:
+        copydata_datadir: "{{ data_dir }}"
+        copydata_src: 'default/'
+        copydata_dest: "/tmp/step4/"
+        copydata_owner: 'root'
+        copydata_group: 'root'
+        copydata_mode: '770'
+        copydata_patterns: "*host1.dummy"
+      when: molecule_step|default('4') == '4'
+    # -----------------------------------------------------
+    - name: "Converge copy 5 remove pattern"
+      include_role:
+        name: "ansible-copydata"
+      vars:
+        copydata_datadir: "{{ data_dir }}"
+        copydata_src: 'default/'
+        copydata_dest: "/tmp/step5/"
+        copydata_owner: 'root'
+        copydata_group: 'root'
+        copydata_mode: '770'
+        copydata_patterns:
+          - "*host1.dummy"
+          - "other_file.dummy"
+        copydata_remove_other_files: True
+      when: molecule_step|default('5') == '5'

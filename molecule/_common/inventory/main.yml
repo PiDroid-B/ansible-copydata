@@ -1,0 +1,7 @@
+all:
+  children:
+    gp_lv1:
+      children:
+        gp_lv2:
+          hosts:
+            instance:

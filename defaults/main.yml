@@ -1,0 +1,17 @@
+---
+# defaults file for copydata
+
+# Remove all files on target didn't match with source
+copydata_remove_other_files: False
+
+# mode of copydata : copy, append, append_reverse
+copydata_copy_type: "copy"
+
+# pattern of source and destination files (all other files will be ignored for copy, append, append_reverse and remove)
+copydata_patterns: "*"
+
+# template for append and append_reverse
+copydata_template: "merge.j2"
+
+# just for... debug
+copydata_debug: False

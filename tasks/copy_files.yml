@@ -1,0 +1,9 @@
+- name: "copy_files : Copy common and specifics files"
+  copy:
+    src: "{{ item }}"
+    dest: "{{ copydata_dest }}"
+    owner: "{{ copydata_owner }}"
+    group: "{{ copydata_group }}"
+    mode: "{{ copydata_mode }}"
+  loop: "{{ _copydata_filelist_tmp['meta']['sources']|list }}"
+  register: _copydata_result_copy

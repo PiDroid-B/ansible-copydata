@@ -1,0 +1,13 @@
+# step_id: id of the step
+# f[{path: "/path/file", contains: "abc"},] : array of dict(path,contains) to create file
+- name: "Verify {{ step_id }} - exists"
+  copy:
+    dest: "/tmp/step{{ step_id }}/{{ item.path }}"
+    owner: 'root'
+    group: 'root'
+    mode: '770'
+    content: "{{ item.contains }}"
+  loop: "{{ f }}"
+  check_mode: yes
+  register: presence
+  failed_when: presence.changed

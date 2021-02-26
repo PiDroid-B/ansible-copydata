@@ -1,0 +1,25 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint: |
+  set -e
+  yamllint .
+  ansible-lint --force-color
+platforms:
+  - name: instance
+    image: ${MOLECULE_OS}
+    dockerfile: ../_common/Dockerfile.j2
+    command: /sbin/init
+    tmpfs: ['/tmp', '/run', '/run/lock']
+    volumes: ['/sys/fs/cgroup:/sys/fs/cgroup:ro']
+provisioner:
+  name: ansible
+  inventory:
+    links:
+      hosts: ../_common/inventory/main.yml
+      group_vars: ../_common/inventory/group_vars/
+      host_vars: ../_common/inventory/host_vars/
+verifier:
+  name: ansible
