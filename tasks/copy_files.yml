@@ -1,4 +1,5 @@
-- name: "copy_files : Copy common and specifics files"
+---
+- name: "Copy common and specifics files"
   copy:
     src: "{{ item }}"
     dest: "{{ copydata_dest }}"

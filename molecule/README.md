@@ -29,6 +29,7 @@ shared folder between all tests
 [:arrow_up:](#table-of-contents)  
 
 test the Copy feature
+(converge with become: True)
 
 ##### Step 1 Default - copy to new path (default options)
 
@@ -101,6 +102,13 @@ test the Copy feature
 | host1.dummy | | group/all<BR>group/gp_lv1<BR>group/gp_lv2<BR>host/instance | host/instance |  
 | onlyhost1.dummy | | host/instance | host/instance |
 
+##### Step 6 become - role launched with ansible_become: True
+
+**options :** ansible_become: True
+
+| File | Prepare | Data Inventory | Verify |
+|:---|:---|:---|:---|
+| onlyhost1.dummy | | host/instance | host/instance |  
 
 #### default_append
 [:arrow_up:](#table-of-contents)  
@@ -178,6 +186,14 @@ test the Append feature (files sorted from global to precise)
 | host1.dummy | | group/all<BR>group/gp_lv1<BR>group/gp_lv2<BR>host/instance | group/all<BR>group/gp_lv1<BR>group/gp_lv2<BR>host/instance |  
 | onlyhost1.dummy | | host/instance | host/instance |
 
+##### Step 6 become - role launched with ansible_become: True
+
+**options :** ansible_become: True
+
+| File | Prepare | Data Inventory | Verify |
+|:---|:---|:---|:---|
+| onlyhost1.dummy | | host/instance | host/instance |  
+
 #### default_append_reverse
 [:arrow_up:](#table-of-contents)  
 
@@ -253,3 +269,13 @@ test the Append_reverse feature (files sorted from precise to global)
 | gp2.dummy | | group/all<BR>group/gp_lv1<BR>group/gp_lv2 | |  
 | host1.dummy | | group/all<BR>group/gp_lv1<BR>group/gp_lv2<BR>host/instance | host/instance<BR>group/gp_lv2<BR>group/gp_lv1<BR>group/all |  
 | onlyhost1.dummy | | host/instance | host/instance |
+
+##### Step 6 become - role launched with ansible_become: True
+
+**options :** ansible_become: True
+
+| File | Prepare | Data Inventory | Verify |
+|:---|:---|:---|:---|
+| other_file | X | | X |  
+| other_file.dummy | X | | | 
+| onlyhost1.dummy | | host/instance | host/instance |  

@@ -134,3 +134,22 @@
         - "all.dummy"
         - "other_file.dummy"
       when: molecule_step|default('5') == '5'
+    # -----------------------------------------------------
+    - name: "Verify copy 6 become"
+      include_tasks: ../_common/verify_item_exists.yml
+      vars:
+        step_id: 6
+        f:
+          - path: "onlyhost1.dummy"
+            contains: |
+              [comme from host1]
+          - path: "host1.dummy"
+            contains: |
+              [comme from host1]
+          - path: "other_file.dummy"
+            contains: |
+              [already exists before test]
+          - path: "other_file"
+            contains: |
+              [already exists before test]
+      when: molecule_step|default('6') == '6'

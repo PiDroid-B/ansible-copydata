@@ -1,5 +1,6 @@
+---
 # common path of data inventory
 data_dir: "../_common/data/"
 
 # debug : run only this step if defined
-#molecule_step: '5'
+#molecule_step: '6'
