@@ -1,11 +1,12 @@
-- name: "remove_other_files : Find old files"
+---
+- name: "Find old files"
   find:
     path: "{{ copydata_dest }}"
     patterns: "{{ copydata_patterns }}"
     excludes: "{{ _copydata_filelist_tmp['meta']['filenames'] }}"
   register: _copydata_oldfiles
 
-- name: "remove_other_files : Remove old files"
+- name: "Remove old files"
   file:
     path: "{{ item.path }}"
     state: absent

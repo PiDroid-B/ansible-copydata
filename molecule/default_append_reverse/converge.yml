@@ -72,3 +72,17 @@
           - "other_file.dummy"
         copydata_remove_other_files: True
       when: molecule_step|default('5') == '5'
+    # -----------------------------------------------------
+    - name: "Converge append_reverse 6 become"
+      include_role:
+        name: "ansible-copydata"
+      vars:
+        copydata_datadir: "{{ data_dir }}"
+        copydata_src: 'default/'
+        copydata_dest: "/tmp/step6/"
+        copydata_owner: 'root'
+        copydata_group: 'root'
+        copydata_mode: '770'
+        copydata_patterns: "*host1.dummy"
+        ansible_become: True
+      when: molecule_step|default('6') == '6'

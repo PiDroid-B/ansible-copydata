@@ -1,17 +1,17 @@
-# TODO: use case dans README
-# TODO : diviser en trois parties (copy=default, appen et append_reverse) > rajouter pour chacun les différentes options
-# TODO : revoir CI
 ---
-
-- name: "main > all : scan"
-  find:
+- name: "find in all"
+  local_action:
+    module: find
+#  find:
     paths: "{{ copydata_datadir }}group/all/{{ copydata_src }}"
     patterns: "{{ copydata_patterns }}"
   register: _copydata_filelist_tmp_all
-  delegate_to: "localhost"
-  become: False
+#  delegate_to: "localhost"
+#  delegate_facts: False
+#  vars:
+#    ansible_become: False
 
-- name: "main > group : scan"
+- name: "find in group"
   find:
     paths: "{{ copydata_datadir }}group/{{ item }}/{{ copydata_src }}"
     patterns: "{{ copydata_patterns }}"
@@ -20,7 +20,7 @@
   delegate_to: "localhost"
   become: False
 
-- name: "main > host : scan"
+- name: "find in host"
   find:
     paths: "{{ copydata_datadir }}host/{{ inventory_hostname }}/{{ copydata_src }}"
     patterns: "{{ copydata_patterns }}"
@@ -28,7 +28,7 @@
   delegate_to: "localhost"
   become: False
 
-- name: "main > build files' list"
+- name: "build files' list"
   copydata_buildfilelist:
     merge: "{{ copydata_copy_type }}"
     debug: "{{ copydata_debug }}"
@@ -41,71 +41,19 @@
 - name: "DEBUG > Result"
   debug:
     var: "{{ item }}"
-  with_items:
+  loop:
     - _copydata_filelist_tmp.meta.filenames
     - _copydata_filelist_tmp.meta.sources
-  when: copydata_debug|default()
+  when: copydata_debug
 
-- include_tasks: "remove_other_files.yml"
-  when: copydata_remove_other_files|default()
+- name: "include remove_other_files if copydata_remove_other_files"
+  include_tasks: "remove_other_files.yml"
+  when: copydata_remove_other_files
 
-- include_tasks: "copy_files.yml"
-  when: copydata_copy_type|default() == "copy"
+- name: "include copy_files if copydata_copy_type == copy"
+  include_tasks: "copy_files.yml"
+  when: copydata_copy_type == "copy"
 
-- include_tasks: "append_files.yml"
-  when: copydata_copy_type|default() in ["append","append_reverse"]
-
-#- name: debug
-#  shell: 'for n in tmp/testcopy/* ; do echo "\n--- $n ---" ; cat $n ; done'
-#  register: aaaaa
-#
-#- name: debug
-#  debug:
-#    var: aaaaa.stdout_lines
-#
-#- assert:
-#    that:
-#      1 == 0
-
-#- name: "set"
-#  debug:
-#    var: _copydata_filelist|dict2items|map(attribute='value') | list
-#  vars:
-#    _copydata_filelist: {
-#        "all.dummy": "../common/data/group/all/scenario_default",
-#        "gp1.dummy": "../common/data/group/gp_lv1/scenario_default",
-#        "gp2.dummy": "../common/data/group/gp_lv2/scenario_default",
-#        "host1.dummy": "../common/data/host/debian-buster/scenario_default",
-#        "onlyhost1.dummy": "../common/data/host/debian-buster/scenario_default"
-#    }
-#
-#- name: "DEBUG"
-#  debug:
-#    var: _copydata_filelist_tmp
-#
-#- name: "copy_files : Copy common and specifics files"
-#  copy:
-#    src: "{{ item }}"
-#    dest: "{{ copydata_dest }}"
-#    owner: "{{ copydata_owner }}"
-#    group: "{{ copydata_group }}"
-#    mode: "{{ copydata_mode }}"
-#  loop: "{{ _copydata_filelist_tmp['meta']['sources'] }}"
-#  register: _copydata_result_copy
-
-#- assert:
-#    that:
-#      1 == 0
-
-# tasks file for copydata
-#- include_tasks: "check_vars.yml"
-#
-#- include_tasks: "build_filelist.yml"
-#
-#- include_tasks: "copy_files.yml"
-
-#- name: "set_fact copydata_changed"
-#  set_fact:
-#    copydata_changed: >
-#       {{ (copydata_remove_other_files|default()|bool and _copydata_result_remove.changed )
-#       or _copydata_result_copy.changed }}
+- name: "include copy_files if copydata_copy_type in [append,append_reverse]"
+  include_tasks: "append_files.yml"
+  when: copydata_copy_type in ["append","append_reverse"]
