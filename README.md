@@ -332,9 +332,12 @@ Hosts:
 ## Author Information
 [:arrow_up:](#table-of-contents)  
 
-PiDroid-B 
+This role was created in 2021 by [PiDroid-B](https://github.com/PiDroid-B)
 
 ## Feedback, bug-reports, requests, ...
 [:arrow_up:](#table-of-contents)  
 
 Are [welcome](https://github.com/PiDroid-B/ansible-copydata/issues) !
+
+
+THIS SOFTWARE COMES WITH NO WARRANTIES, USE AT YOUR OWN RISK
