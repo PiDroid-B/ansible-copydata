@@ -169,10 +169,4 @@
           - path: "host1.dummy"
             contains: |
               [comme from host1]
-          - path: "other_file.dummy"
-            contains: |
-              [already exists before test]
-          - path: "other_file"
-            contains: |
-              [already exists before test]
       when: molecule_step|default('6') == '6'

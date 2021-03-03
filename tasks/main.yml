@@ -1,32 +1,9 @@
 ---
-- name: "find in all"
-  local_action:
-    module: find
-#  find:
-    paths: "{{ copydata_datadir }}group/all/{{ copydata_src }}"
-    patterns: "{{ copydata_patterns }}"
-  register: _copydata_filelist_tmp_all
-#  delegate_to: "localhost"
-#  delegate_facts: False
-#  vars:
-#    ansible_become: False
 
-- name: "find in group"
-  find:
-    paths: "{{ copydata_datadir }}group/{{ item }}/{{ copydata_src }}"
-    patterns: "{{ copydata_patterns }}"
-  register: _copydata_filelist_tmp_gp
-  loop: "{{ group_names }}"
-  delegate_to: "localhost"
-  become: False
-
-- name: "find in host"
-  find:
-    paths: "{{ copydata_datadir }}host/{{ inventory_hostname }}/{{ copydata_src }}"
-    patterns: "{{ copydata_patterns }}"
-  register: _copydata_filelist_tmp_host
-  delegate_to: "localhost"
-  become: False
+- name: "include find the according files"
+  include_tasks: "find.yml"
+  vars:
+    ansible_become: false
 
 - name: "build files' list"
   copydata_buildfilelist:
@@ -46,14 +23,14 @@
     - _copydata_filelist_tmp.meta.sources
   when: copydata_debug
 
-- name: "include remove_other_files if copydata_remove_other_files"
+- name: "remove other files if copydata_remove_other_files"
   include_tasks: "remove_other_files.yml"
   when: copydata_remove_other_files
 
-- name: "include copy_files if copydata_copy_type == copy"
+- name: "copy files if copydata_copy_type == copy"
   include_tasks: "copy_files.yml"
   when: copydata_copy_type == "copy"
 
-- name: "include copy_files if copydata_copy_type in [append,append_reverse]"
+- name: "append files if copydata_copy_type in [append,append_reverse]"
   include_tasks: "append_files.yml"
   when: copydata_copy_type in ["append","append_reverse"]

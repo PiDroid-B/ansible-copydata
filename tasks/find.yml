@@ -1,0 +1,22 @@
+---
+- name: "find in all"
+  find:
+    paths: "{{ copydata_datadir }}group/all/{{ copydata_src }}"
+    patterns: "{{ copydata_patterns }}"
+  register: _copydata_filelist_tmp_all
+  delegate_to: "localhost"
+
+- name: "find in group"
+  find:
+    paths: "{{ copydata_datadir }}group/{{ item }}/{{ copydata_src }}"
+    patterns: "{{ copydata_patterns }}"
+  register: _copydata_filelist_tmp_gp
+  loop: "{{ group_names }}"
+  delegate_to: "localhost"
+
+- name: "find in host"
+  find:
+    paths: "{{ copydata_datadir }}host/{{ inventory_hostname }}/{{ copydata_src }}"
+    patterns: "{{ copydata_patterns }}"
+  register: _copydata_filelist_tmp_host
+  delegate_to: "localhost"
