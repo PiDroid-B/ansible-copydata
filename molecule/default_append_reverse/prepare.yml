@@ -53,3 +53,5 @@
             contains: |
               [already exists before test]
       when: molecule_step|default('5') == '5'
+    # -----------------------------------------------------
+    # no prepare for step 6
