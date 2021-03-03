@@ -1,6 +1,9 @@
 # Ansible Role : copydata
 
-[![Ansible Galaxy](https://img.shields.io/badge/galaxy-.svg)](https://galaxy.ansible.com/)
+[![Ansible Role](https://img.shields.io/ansible/role/53409?label=Galaxy)](https://galaxy.ansible.com/pidroid_b/copydata)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/PiDroid-B/ansible-copydata)](https://galaxy.ansible.com/pidroid_b/copydata)
+[![Ansible Quality Score](https://img.shields.io/ansible/quality/53409?label=Ansible%20Quality)](https://galaxy.ansible.com/pidroid_b/copydata)
+![Ansible Role](https://img.shields.io/ansible/role/d/53409)
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](http://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 | Branch | master | dev | 
@@ -104,14 +107,22 @@ This role can manage copy of concatenation of files from data inventory tree on 
 ## Installation
 [:arrow_up:](#table-of-contents)
 
+Tested on Ansible's versions :
+- 2.8
+- 2.9
+- 2.10
+
 Latest stable release 
 
 * Ansible Galaxy : coming soon 
 * GitHub : `git clone https://github.com/PiDroid-B/ansible-copydata.git`
 
+
+
 ## Platforms
 [:arrow_up:](#table-of-contents)
 
+Tested on :
 * Debian 9 (Stretch)
 * Debian 10 (Buster)
 * Ubuntu 16.04 LTS (Xenial Xerus)
