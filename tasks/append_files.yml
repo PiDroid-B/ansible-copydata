@@ -1,4 +1,5 @@
-- name: "append_files : ensures target directory exists"
+---
+- name: "Ensures target directory exists"
   file:
     path: "{{ copydata_dest }}"
     owner: "{{ copydata_owner }}"
@@ -6,7 +7,7 @@
     mode: "{{ copydata_mode }}"
     state: directory
 
-- name: "append_files : Append common and specifics files"
+- name: "Append common and specifics files"
   template:
     src: "{{ copydata_template }}"
     dest: "{{ copydata_dest }}/{{ item[0] }}"
