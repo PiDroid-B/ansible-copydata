@@ -114,9 +114,9 @@ Tested on Ansible's versions :
 
 Latest stable release 
 
-* Ansible Galaxy : coming soon 
-* GitHub : `git clone https://github.com/PiDroid-B/ansible-copydata.git`
+* Ansible Galaxy : `ansible-galaxy install pidroid_b.copydata`
 
+* GitHub : you can take the latest release
 
 
 ## Platforms
